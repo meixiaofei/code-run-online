@@ -1,0 +1,268 @@
+doctype html
+html
+    head
+        meta(charset="urf-8")
+        title Code Run Online
+        link(rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/codemirror/5.54.0/codemirror.min.css")
+        link(rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/codemirror/5.54.0/theme/idea.min.css")
+
+        script(src="https://cdn.bootcdn.net/ajax/libs/codemirror/5.54.0/codemirror.min.js")
+        script(src="https://cdn.bootcdn.net/ajax/libs/codemirror/5.54.0/mode/clike/clike.min.js")
+        script(src="https://cdn.bootcdn.net/ajax/libs/codemirror/5.54.0/addon/hint/anyword-hint.min.js")
+
+        link(rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/codemirror/5.54.0/addon/fold/foldgutter.css")
+        link(rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/codemirror/5.54.0/addon/hint/show-hint.min.css")
+        script(src="https://cdn.bootcdn.net/ajax/libs/codemirror/5.54.0/addon/hint/show-hint.min.js")
+        script(src="https://cdn.bootcdn.net/ajax/libs/codemirror/5.54.0/addon/fold/foldcode.min.js")
+        script(src="https://cdn.bootcdn.net/ajax/libs/codemirror/5.54.0/addon/fold/foldgutter.min.js")
+        script(src="https://cdn.bootcdn.net/ajax/libs/codemirror/5.54.0/addon/fold/brace-fold.min.js")
+        script(src="https://cdn.bootcdn.net/ajax/libs/codemirror/5.54.0/addon/fold/comment-fold.min.js")
+        script(src="https://cdn.bootcdn.net/ajax/libs/codemirror/5.54.0/addon/fold/indent-fold.min.js")
+
+        script(src="https://cdn.bootcdn.net/ajax/libs/codemirror/5.54.0/mode/javascript/javascript.min.js")
+        script(src="https://cdn.bootcdn.net/ajax/libs/codemirror/5.54.0/mode/go/go.min.js")
+        script(src="https://cdn.bootcdn.net/ajax/libs/codemirror/5.54.0/mode/php/php.min.js")
+        script(src="https://cdn.bootcdn.net/ajax/libs/codemirror/5.54.0/mode/ruby/ruby.min.js")
+        script(src="https://cdn.bootcdn.net/ajax/libs/codemirror/5.54.0/mode/python/python.js")
+        style(type="text/css").
+            * {
+                margin: 0;
+                padding: 0;
+            }
+
+            .CodeMirror {
+                height: 60vh;
+                box-shadow: 0 4px 24px 4px rgba(6, 8, 40, .5);
+            }
+
+            body {
+                height: 100vh;
+                background: rgb(40, 42, 54);
+            }
+
+            .header {
+                display: flex;
+                justify-content: space-between;
+                padding: 15px 30px;
+                color: aliceblue;
+                box-shadow: 0 4px 24px 0 rgba(6, 8, 40, .5);
+            }
+
+            .header-title {
+                font-weight: bold;
+                font-size: 14px;
+            }
+
+            .header-link {
+                margin-left: 10px;
+                text-decoration: none;
+                color: aliceblue;
+                font-weight: normal;
+            }
+
+            .content {
+                position: relative;
+                display: flex;
+                height: calc(40vh - 50px);
+            }
+
+            .execute {
+                position: absolute;
+                top: -50px;
+                right: 20px;
+                border-style: solid;
+                border-width: 10px 17px;
+                border-color: transparent transparent transparent #009a61;
+                cursor: pointer;
+            }
+
+            .setting {
+                flex-basis: 300px;
+                box-shadow: 7px 0 7px -7px black;
+            }
+
+            .setting:before {
+                content: 'Setting >';
+                margin-left: 5px;
+                color: rgb(113, 113, 114);
+                font-size: 15px;
+                font-family: monospace;
+            }
+
+            .setting-row {
+                display: flex;
+                align-items: center;
+                height: 35px;
+                margin-left: 30px;
+                margin-bottom: 5px;
+                font-size: 14px;
+                font-weight: bold;
+                color: #78CF8A;
+                font-family: Verdana, "Geneva CE", lucida, 'Microsoft YaHei', sans-serif;
+            }
+
+            .setting-label {
+                display: inline-block;
+                width: 125px;
+            }
+
+            #language {
+                background: #fafdfe;
+                height: 28px;
+                line-height: 28px;
+                border: 1px solid #9bc0dd;
+                border-radius: 2px;
+            }
+
+            #result {
+                padding: 5px;
+                width: 100%;
+                background: rgba(43, 43, 43, .7);
+                font-size: 15px;
+                border: none;
+                resize: none;
+                color: rgba(255, 255, 255, .7);
+                display: block;
+            }
+
+            .checkbox-btn {
+                display: none;
+            }
+
+            .checkbox-label {
+                position: relative;
+                display: inline-block;
+                width: 90px;
+                height: 20px;
+                border-radius: 20px;
+                background-color: gray;
+                overflow: hidden;
+                text-align: right;
+            }
+
+            .checkbox-label:before {
+                content: '';
+                position: absolute;
+                left: 0;
+                width: 20px;
+                height: 20px;
+                display: inline-block;
+                border-radius: 20px;
+                background-color: white;
+                transition: all 0.5s;
+            }
+
+            .checkbox-btn:checked + .checkbox-label:before {
+                left: 70px;
+            }
+
+            .checkbox-btn:checked + .checkbox-label {
+                background-color: #0084ff;
+                text-align: left;
+            }
+    body
+        header(class="header")
+            p(class="header-title") Code Run Online
+                a(class="header-link" href="")
+            <svg xmlns="http://www.w3.org/2000/svg" width="54" height="15" viewBox="0 0 54 15">
+            <g fill="none" fill-rule="evenodd" transform="translate(1 1)">
+            <circle cx="6" cy="6" r="6" fill="#27C93F" stroke="#1AAB29" stroke-width=".5"></circle>
+            <circle cx="26" cy="6" r="6" fill="#FFBD2E" stroke="#DEA123" stroke-width=".5"></circle>
+            <circle cx="46" cy="6" r="6" fill="#FF5F56" stroke="#E0443E" stroke-width=".5"></circle>
+            </g>
+            </svg>
+
+        main(class="main")
+            textarea(id="code" placeholder="Input >")
+            div(class="content")
+                div(class="execute" onclick="handleSubmit()")
+                div(class="setting")
+                    div(class="setting-row")
+                        span(class="setting-label") language:
+                    div(class="radios")
+                        each language, index in ['php', 'go', 'ruby', 'python', 'python3', 'java']
+                            input(type="radio", name="language", id=language, value=language, checked=!index, class="checkbox-btn", onclick="handleSelect('" + language + "')")
+                            label(for=language, class="checkbox-label")= language
+                textarea(id="result" readonly placeholder="Output >")
+
+    script(type="text/javascript").
+        const language = document.querySelector("input[name=language]:checked").value
+
+        const codeInput = document.getElementById('code')
+        const resultDom = document.getElementById('result')
+        const editor = CodeMirror.fromTextArea(codeInput, {
+            lineNumbers: true,
+            theme: 'dracula',
+            matchBrackets: true,
+            lineWrapping: true,
+            autoCloseTags: true,
+            extraKeys: {"Tab": "autocomplete"},
+            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+            mode: 'text/x-php',
+        });
+        editor.setValue("<?php\n" +
+            "  echo date('Y-m-d H:i:s');");
+        editor.on('keyup', function (editor, event) {
+            if (!editor.state.completionActive &&   /*Enables keyboard navigation in autocomplete list*/
+                event.keyCode > 64 && event.keyCode < 91) {// only when a letter key is pressed
+                CodeMirror.commands.autocomplete(editor, null, {completeSingle: false});
+            }
+        });
+
+        const eventSource = new EventSource('/sse')
+        eventSource.addEventListener('sse-connect', function (event) {
+            resultDom.placeholder = `Output> sandbox connect`
+        })
+        eventSource.onerror = function () {
+            resultDom.placeholder = `Output> sandbox disconnect`
+        }
+        eventSource.addEventListener('sse-result', function (event) {
+            resultDom.value += `${event.data}`
+        })
+        eventSource.addEventListener('sse-message', function (event) {
+            resultDom.value += `${event.data}\n`
+        })
+
+        function handleSelect(language) {
+            let mode, value;
+            switch (language) {
+                case 'php':
+                    value = "<?php\n" +
+                        "  echo date('Y-m-d H:i:s');";
+                    mode = 'x-php';
+                    break;
+                case 'go':
+                    value = "package main\n" +
+                        "\n" +
+                        "import \"fmt\"\n" +
+                        "\n" +
+                        "func main() {\n" +
+                        "\tfmt.Println(\"hello world\")\n" +
+                        "}";
+                    mode = 'x-go';
+                    break;
+                case 'node':
+                    value = 'javascript';
+                    mode = 'x-javascript'
+                    break;
+            }
+            editor.setValue(value)
+            editor.setOption('mode', 'text/x-' + mode)
+            resultDom.value = ''
+        }
+
+        function handleSubmit() {
+            resultDom.value = ''
+            const payload = {
+                lang: language,
+                code: editor.getValue(),
+                classname: '',
+            }
+            fetch('/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+        }
