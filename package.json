@@ -6,7 +6,7 @@
     "child_process": "^1.0.2",
     "codemirror": "^5.58.2",
     "compression": "^1.7.4",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-sse": "^0.5.3",
     "fs": "0.0.1-security",
     "os": "^0.1.1"
